@@ -6,7 +6,7 @@ const logoImg = require('./assets/adaptive-icon.png')
 export default function App() {
   return (
     <View style={style.container}>
-      <Image style={style.image} source={logoImg}/>
+      <Image style={style.image} source={{uri: 'https://picsum.photos/200' }} />
       <Text style={style.OuterText}>
         <Text style={style.worldText}>Hello </Text>World
       </Text>
