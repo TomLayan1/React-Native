@@ -1,11 +1,15 @@
 // Lesson 1: Change the text in the Text element to 'Hello World' and background of the the View element
 
-import { Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Button, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 const logoImg = require('./assets/adaptive-icon.png')
 
 export default function App() {
+  const [darkTheme, setDarkTheme] = useState<boolean>(false);
+  const theme = darkTheme ? 'black' : 'white'
   return (
-    <View style={style.container}>
+    <View style={{ flex: 1, paddingVertical: 30, backgroundColor: theme}}>
+      <StatusBar />
       <ScrollView style={style.pgScroll}>
           <Image style={style.image} source={{uri: 'https://picsum.photos/200' }} />
           <Text style={style.OuterText}>
@@ -18,6 +22,7 @@ Donec dolor purus, interdum a iaculis vel, tristique vel nulla. Vivamus et felis
 
 
         </Text>
+        <Button onPress={() => setDarkTheme(!darkTheme)} disabled title="Change theme" color="plum" />
       </ScrollView>
     </View>
   )
@@ -25,7 +30,6 @@ Donec dolor purus, interdum a iaculis vel, tristique vel nulla. Vivamus et felis
 
 const style = StyleSheet.create({
   container: {
-    backgroundColor: '#000000',
     flex: 1,
     paddingVertical: 30
   },
@@ -46,10 +50,10 @@ const style = StyleSheet.create({
     marginBottom: 30
   },
   worldText: {
-    color: '#fff',
+    color: '#bab9b9ff',
   },
   loremText: {
-    color: '#ffffff',
+    color: '#bab9b9ff',
     fontSize: 20,
     lineHeight: 28
   }
