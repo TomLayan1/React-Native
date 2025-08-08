@@ -1,7 +1,7 @@
 // Lesson 1: Change the text in the Text element to 'Hello World' and background of the the View element
 
 import { useState } from "react";
-import { Button, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { Button, Image, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
 const logoImg = require('./assets/adaptive-icon.png')
 
 export default function App() {
@@ -11,10 +11,14 @@ export default function App() {
     <View style={{ flex: 1, paddingVertical: 30, backgroundColor: theme}}>
       <StatusBar />
       <ScrollView style={style.pgScroll}>
+        <Pressable onPress={() => console.log('image pressed')}>
           <Image style={style.image} source={{uri: 'https://picsum.photos/200' }} />
+        </Pressable>
+        <Pressable onPress={() => console.log('Text pressed')}>
           <Text style={style.OuterText}>
             <Text style={style.worldText}>Hello </Text>World
           </Text>
+        </Pressable>
         <Text style={style.loremText}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac tellus ut nulla egestas aliquet. Suspendisse pulvinar nulla id quam pulvinar congue. Praesent accumsan semper risus, in finibus neque efficitur quis. Aliquam pellentesque erat id lacinia aliquet. Fusce elementum non purus a vulputate. Cras vestibulum orci sit amet sem egestas, sed ornare lectus bibendum. Donec ut euismod lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras ut nisl mauris. Pellentesque varius urna sed odio mattis condimentum. Quisque id lacus a libero venenatis hendrerit. Interdum et malesuada fames ac ante ipsum primis in faucibus.
 
@@ -22,7 +26,17 @@ Donec dolor purus, interdum a iaculis vel, tristique vel nulla. Vivamus et felis
 
 
         </Text>
-        <Button onPress={() => setDarkTheme(!darkTheme)} disabled title="Change theme" color="plum" />
+        <Button onPress={() => setDarkTheme(!darkTheme)} title="Change theme" color="plum" />
+        
+        <Pressable style={style.pressIn} onPressIn={() => console.log('On Press In')}>
+          <Text>On Press In</Text>
+        </Pressable>
+        <Pressable style={style.longPress} onLongPress={() => console.log("Long Pressed")}>
+          <Text>On Long Press</Text>
+        </Pressable>
+        <Pressable style={style.pressOut} onPressOut={() => console.log("Press Out")}>
+          <Text>On Press Out</Text>
+        </Pressable>
       </ScrollView>
     </View>
   )
@@ -56,5 +70,26 @@ const style = StyleSheet.create({
     color: '#bab9b9ff',
     fontSize: 20,
     lineHeight: 28
+  },
+  pressIn : {
+    backgroundColor: 'yellow',
+    padding: 7,
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+  longPress: {
+    backgroundColor: 'green',
+    padding: 7,
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+  pressOut: {
+    backgroundColor: 'purple',
+    padding: 7,
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 10
   }
 })
