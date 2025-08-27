@@ -8,7 +8,6 @@ export const RNList = () => {
       <FlatList 
         data={pokemonList}
         renderItem={({ item }) => {
-          console.log(item.id)
           return (
             <View style={styles.card}>
               <Text style={styles.cardText}>{item.name}</Text>
@@ -17,6 +16,7 @@ export const RNList = () => {
           )
         }}
         keyExtractor={(item) => (item.id.toString())}
+        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
       />
     </View>
   )
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     padding: 14,
     borderWidth: 2,
     borderRadius: 14,
-    marginBottom: 10
+    // marginBottom: 16
   },
   cardText: {
     fontSize: 18,
