@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    paddingTop: 12
   },
   card: {
     padding: 14,

@@ -1,7 +1,8 @@
 
 import { StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider,SafeAreaView } from "react-native-safe-area-context";
-import { RNList } from "./lessons/RNLists";
+import { InputsNForms } from "./lessons/InputsNForms";
+// import { RNList } from "./lessons/RNLists";
 
 export default function App() {
 
@@ -9,7 +10,8 @@ export default function App() {
     <SafeAreaProvider>
       <SafeAreaView style={style.safeContainer} edges={['top', 'right', 'left']}>
         <StatusBar />
-        <RNList />
+        {/* <RNList />  */}
+        <InputsNForms />
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -18,6 +20,5 @@ export default function App() {
 const style = StyleSheet.create({
   safeContainer: {
     flex: 1,
-    paddingTop: 12
   }
 })
