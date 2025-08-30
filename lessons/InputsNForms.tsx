@@ -18,6 +18,12 @@ export const InputsNForms = () => {
           // secureTextEntry
           // keyboardType="numeric"
         />
+
+        <TextInput
+          style={styles.textInput} 
+          placeholder="Messages"
+          multiline
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -32,6 +38,12 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 5,
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5,
+    marginBottom: 14
+  },
+  multilineInput: {
+    minHeight: 100,
+    maxHeight: 100,
+    textAlignVertical: "top"
   }
 })
