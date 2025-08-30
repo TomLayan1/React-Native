@@ -4,12 +4,20 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 
 export const InputsNForms = () => {
   const [inputValue, setInputValue] = useState<string>("");
-  console.log('Value: ',inputValue);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={[ 'top', 'left', 'right' ]}>
-        <TextInput value={inputValue} onChangeText={setInputValue} style={styles.textInput} />
-        <Text>{inputValue}</Text>
+        <TextInput 
+          value={inputValue}
+          onChangeText={setInputValue}
+          style={styles.textInput}
+          placeholder="Placeholder@example"
+          autoCorrect={false}
+          autoCapitalize="none"
+          // secureTextEntry
+          // keyboardType="numeric"
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -18,7 +26,6 @@ export const InputsNForms = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "plum",
     padding: 10
   },
   textInput: {
