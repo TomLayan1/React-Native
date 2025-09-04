@@ -18,11 +18,50 @@ type FormDataType = {
   password: string;
 }
 
+type LoginErrMsgType = {
+  usernameErr: string;
+  passwordErr: string;
+}
+
 export const LoginForm = () => {
   const [formData, setFormData] = useState<FormDataType>({
     username: "",
     password: ""
   });
+  const DEMO_CREDENTIAL = {
+    id: 1,
+    demoUsername: "testing_man",
+    demoPassword: "12345678"
+  }
+  const [errors, setErrors] = useState<LoginErrMsgType>({
+    usernameErr: "",
+    passwordErr: ""
+  });
+  console.log(errors)
+
+  const validateForm = () => {
+    const errors: LoginErrMsgType = {
+      usernameErr: "",
+      passwordErr: ""
+    };
+    
+    
+    if (!formData.username) {
+      errors.usernameErr = "username required"
+    } else if (formData.username !== DEMO_CREDENTIAL.demoUsername) {
+      errors.usernameErr = "Incorrect username"
+    }
+
+    if (!formData.password) {
+      errors.passwordErr = "Password required"
+    } else if (formData.password !== DEMO_CREDENTIAL.demoPassword) {
+      errors.passwordErr = "Incorrect password"
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0
+  }
 
   return (
     <View style={styles.container}>
@@ -34,6 +73,7 @@ export const LoginForm = () => {
               <View style={styles.inputContainer}>
                 <View style={{ marginBottom: 14}}>
                   <Text style={styles.fieldName}>Username</Text>
+                  {errors?.usernameErr && <Text style={{ color: "red", fontSize: 16 , marginBottom: 9 }}>{errors?.usernameErr}</Text>}
                   <TextInput
                     value={formData.username}
                     onChangeText={(text: string) => setFormData(prev => ({
@@ -46,6 +86,7 @@ export const LoginForm = () => {
                 </View>
                 <View style={{ marginBottom: 14 }}>
                   <Text style={styles.fieldName}>Password</Text>
+                  {errors?.passwordErr && <Text style={{ color: "red", fontSize: 16, marginBottom: 9 }}>{errors?.passwordErr}</Text>}
                   <TextInput
                     value={formData.password}
                     onChangeText={(text: string) => setFormData(prev => ({
@@ -58,9 +99,9 @@ export const LoginForm = () => {
                   />
                 </View>
               </View>
-              <Pressable style={styles.loginBtn} onPress={() => {
-                console.log( "Login Data: ", formData)
-              }}>
+              <Pressable style={styles.loginBtn} onPress={
+                validateForm
+               }>
                 <Text style={styles.btnText}>Login</Text>
               </Pressable>
             </View>
