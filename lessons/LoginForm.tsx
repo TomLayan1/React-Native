@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { 
+import {
+  KeyboardAvoidingView,
+  Platform,
   Pressable, 
   StyleSheet, 
   Text, 
@@ -26,41 +28,43 @@ export const LoginForm = () => {
     <View style={styles.container}>
       <SafeAreaProvider>
         <SafeAreaView style={styles.container} edges={["top", "right", "left"]}>
-          <View style={styles.formContainer}>
-            {/* <Text style={styles.formTitle}>Login Form</Text> */}
-            <View style={styles.inputContainer}>
-              <View style={{ marginBottom: 14}}>
-                <Text style={styles.fieldName}>Username</Text>
-                <TextInput
-                  value={formData.username}
-                  onChangeText={(text: string) => setFormData(prev => ({
-                    ...prev, username: text
-                  }))}
-                  style={styles.formInput}
-                  placeholder="Username"
-                  autoCapitalize="none"
-                />
+          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}>
+            <View style={styles.formContainer}>
+              {/* <Text style={styles.formTitle}>Login Form</Text> */}
+              <View style={styles.inputContainer}>
+                <View style={{ marginBottom: 14}}>
+                  <Text style={styles.fieldName}>Username</Text>
+                  <TextInput
+                    value={formData.username}
+                    onChangeText={(text: string) => setFormData(prev => ({
+                      ...prev, username: text
+                    }))}
+                    style={styles.formInput}
+                    placeholder="Username"
+                    autoCapitalize="none"
+                  />
+                </View>
+                <View style={{ marginBottom: 14 }}>
+                  <Text style={styles.fieldName}>Password</Text>
+                  <TextInput
+                    value={formData.password}
+                    onChangeText={(text: string) => setFormData(prev => ({
+                      ...prev, password : text
+                    }))}
+                    style={styles.formInput} 
+                    placeholder="Password"
+                    secureTextEntry
+                    autoCapitalize="none"
+                  />
+                </View>
               </View>
-              <View style={{ marginBottom: 14 }}>
-                <Text style={styles.fieldName}>Password</Text>
-                <TextInput
-                  value={formData.password}
-                  onChangeText={(text: string) => setFormData(prev => ({
-                    ...prev, password : text
-                  }))}
-                  style={styles.formInput} 
-                  placeholder="Password"
-                  secureTextEntry
-                  autoCapitalize="none"
-                />
-              </View>
+              <Pressable style={styles.loginBtn} onPress={() => {
+                console.log( "Login Data: ", formData)
+              }}>
+                <Text style={styles.btnText}>Login</Text>
+              </Pressable>
             </View>
-            <Pressable style={styles.loginBtn} onPress={() => {
-              console.log( "Login Data: ", formData)
-            }}>
-              <Text style={styles.btnText}>Login</Text>
-            </Pressable>
-          </View>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </SafeAreaProvider>
     </View>
