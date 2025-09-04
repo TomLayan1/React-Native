@@ -1,8 +1,9 @@
 
 import { StatusBar, StyleSheet } from "react-native";
 import { SafeAreaProvider,SafeAreaView } from "react-native-safe-area-context";
-import { InputsNForms } from "./lessons/InputsNForms";
 // import { RNList } from "./lessons/RNLists";
+// import { InputsNForms } from "./lessons/InputsNForms";
+import { LoginForm } from "./lessons/LoginForm";
 
 export default function App() {
 
@@ -11,7 +12,8 @@ export default function App() {
       <SafeAreaView style={style.safeContainer} edges={['top', 'right', 'left']}>
         <StatusBar />
         {/* <RNList />  */}
-        <InputsNForms />
+        {/* <InputsNForms /> */}
+        <LoginForm />
       </SafeAreaView>
     </SafeAreaProvider>
   )
