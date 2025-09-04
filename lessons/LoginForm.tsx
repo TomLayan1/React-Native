@@ -37,7 +37,8 @@ export const LoginForm = () => {
     usernameErr: "",
     passwordErr: ""
   });
-  console.log(errors)
+  console.log(formData);
+  console.log(errors);
 
   const validateForm = () => {
     const errors: LoginErrMsgType = {
@@ -60,7 +61,21 @@ export const LoginForm = () => {
 
     setErrors(errors);
 
-    return Object.keys(errors).length === 0
+    return !errors.usernameErr && !errors.passwordErr
+  }
+
+  const handleSubmission = () => {
+    if (validateForm()) {
+      console.log('Form submitted!');
+      setFormData({
+        username: "",
+        password: ""
+      });
+      setErrors({
+        usernameErr: "",
+        passwordErr: ""
+      });
+    } 
   }
 
   return (
@@ -99,9 +114,7 @@ export const LoginForm = () => {
                   />
                 </View>
               </View>
-              <Pressable style={styles.loginBtn} onPress={
-                validateForm
-               }>
+              <Pressable style={styles.loginBtn} onPress={handleSubmission}>
                 <Text style={styles.btnText}>Login</Text>
               </Pressable>
             </View>
