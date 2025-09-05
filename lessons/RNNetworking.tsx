@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { 
   ActivityIndicator,
+  Button,
   FlatList,
+  Pressable,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import {
@@ -18,10 +21,14 @@ type PostType = {
 }
 
 export const RNNetworking = () => {
-  const [posts, setPosts] = useState<PostType[] | null>(null);
+  const [posts, setPosts] = useState<PostType[]>([]);
   const [isLoading, setLoading] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [postTitle, setPostTitle] = useState<string>("");
+  const [postBody, setPostBody] = useState<string>("");
+  const [isPosting, setIsPosting] = useState<boolean>(false);
 
+  // GET REQUEST
   const fetchData = async(limit = 10) => {
     setLoading(true);
     const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}`);
@@ -36,12 +43,42 @@ export const RNNetworking = () => {
     fetchData();
   }, []);
 
+  // POST REQUEST
+  const handleDataPosting = async() => {
+    try {
+      setIsPosting(true);
+      const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          title: postTitle,
+          body: postBody
+        })
+      })
+  
+      const newPost = await response.json();
+      setPosts([newPost, ...posts]);
+      setPostTitle("");
+      setPostBody("");
+    }
+    catch(error) {
+      console.error(error);
+    }
+    finally{
+      setIsPosting(false);
+    }
+  }
+  
+  // TO REFRESH
   const handleRefresh = () => {
     setRefreshing(true);
     fetchData(20);
-    setRefreshing(false)
+    setRefreshing(false);
   }
 
+  // LOADING COMOPONENT
   if (isLoading) {
     return (
       <SafeAreaProvider>
@@ -56,23 +93,48 @@ export const RNNetworking = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        <FlatList 
-          data={posts}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.postCard}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.body}>{item.body}</Text>
-              </View>
-            )
-          }}
-          keyExtractor={item => item.id.toString()}
-          ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
-          ListHeaderComponent={() => <Text style={styles.header}>Fetched Posts</Text>}
-          ListFooterComponent={() => <Text style={styles.header}>End of list</Text>}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-        />
+        <>
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <Text>Title</Text>
+              <TextInput
+                style={styles.formInput}
+                placeholder="Enter a title"
+                value={postTitle}
+                onChangeText={setPostTitle}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text>Body</Text>
+              <TextInput
+                style={styles.formInput}
+                placeholder="Enter body"
+                value={postBody}
+                onChangeText={setPostBody}
+              />
+            </View>
+            <Pressable style={styles.postBtn} onPress={handleDataPosting} disabled={isPosting}>
+              <Text style={styles.btnText}>{isPosting ? "Posting..." : "Post content"}</Text>
+            </Pressable>
+          </View>
+          <FlatList 
+            data={posts}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.postCard}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.body}>{item.body}</Text>
+                </View>
+              )
+            }}
+            keyExtractor={item => item.id.toString()}
+            ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
+            ListHeaderComponent={() => <Text style={styles.header}>Fetched Posts</Text>}
+            ListFooterComponent={() => <Text style={styles.header}>End of list</Text>}
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        </>
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -107,5 +169,40 @@ const styles = StyleSheet.create({
   body: {
     fontSize: 16,
     lineHeight: 20
+  },
+  formContainer: {
+    backgroundColor: "white",
+    marginBottom: 20,
+    padding: 20,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderRadius: 13
+  },
+  inputContainer: {
+    marginBottom: 20
+  },
+  formInput: {
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#7b7575ff",
+    padding: 10,
+    borderRadius: 7
+  },
+  postBtn: {
+    backgroundColor: "green",
+    padding: 12,
+    borderRadius: 7
+  },
+  btnText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 17,
+    fontWeight: "bold"
   }
 })
