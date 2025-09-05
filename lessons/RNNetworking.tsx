@@ -20,20 +20,27 @@ type PostType = {
 export const RNNetworking = () => {
   const [posts, setPosts] = useState<PostType[] | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async() => {
-      setLoading(true);
-      const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=10");
-      const data = await response.json();
-      if (data) {
-        setPosts(data)
-      }
-      setLoading(false);
+  const fetchData = async(limit = 10) => {
+    setLoading(true);
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}`);
+    const data = await response.json();
+    if (data) {
+      setPosts(data)
     }
-
+    setLoading(false);
+  }
+  
+  useEffect(() => {
     fetchData();
   }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData(20);
+    setRefreshing(false)
+  }
 
   if (isLoading) {
     return (
@@ -63,6 +70,8 @@ export const RNNetworking = () => {
           ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
           ListHeaderComponent={() => <Text style={styles.header}>Fetched Posts</Text>}
           ListFooterComponent={() => <Text style={styles.header}>End of list</Text>}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
         />
       </SafeAreaView>
     </SafeAreaProvider>
