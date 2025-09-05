@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { 
+  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
@@ -18,23 +19,36 @@ type PostType = {
 
 export const RNNetworking = () => {
   const [posts, setPosts] = useState<PostType[] | null>(null);
-  console.log("Fetched posts", posts)
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async() => {
+      setLoading(true);
       const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=10");
       const data = await response.json();
       if (data) {
         setPosts(data)
       }
+      setLoading(false);
     }
 
     fetchData();
-  }, [])
+  }, []);
+
+  if (isLoading) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.loadingContainer} edges={["top", "left", "right"]}>
+          <ActivityIndicator size={"large"} />
+          <Text>Loading...</Text>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    )
+  }
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <FlatList 
           data={posts}
           renderItem={({ item }) => {
@@ -56,6 +70,11 @@ export const RNNetworking = () => {
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
   container: {
     flex: 1,
     padding: 10
