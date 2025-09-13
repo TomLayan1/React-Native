@@ -2,6 +2,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeScreen } from "../screens/HomeScreen";
 import { AboutScreen } from "../screens/AboutScreen";
 
+export type RootStackParamList = {
+  Home: undefined,
+  About: undefined
+}
+
 const Stack = createNativeStackNavigator();
 
 export default function RootStack() {
