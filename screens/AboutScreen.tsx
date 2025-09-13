@@ -1,16 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../navigation/RootStack"
-import { useNavigation } from "@react-navigation/native"
 
-type AboutScreenNavProps = NativeStackNavigationProp<RootStackParamList, "About">
+type AboutScreenProps = NativeStackScreenProps<RootStackParamList, "About">
 
-export const AboutScreen = () => {
-  const navigation = useNavigation<AboutScreenNavProps>();
+export const AboutScreen:React.FC<AboutScreenProps> = ({ navigation, route }) => {
+  const { name } = route.params
   
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>About Screen</Text>
+      <Text style={styles.text}>About {name}</Text>
       <Pressable onPress={() => navigation.navigate("Home") }>
         <Text style={styles.nav}>Go to home page</Text>
       </Pressable>

@@ -4,10 +4,12 @@ import { AboutScreen } from "../screens/AboutScreen";
 
 export type RootStackParamList = {
   Home: undefined,
-  About: undefined
+  About: {
+    name: string
+  }
 }
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootStack() {
   return(
