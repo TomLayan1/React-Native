@@ -1,11 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { RootStackParamList } from "../navigation/RootStack"
+import { useEffect } from "react"
 
 type AboutScreenProps = NativeStackScreenProps<RootStackParamList, "About">
 
 export const AboutScreen:React.FC<AboutScreenProps> = ({ navigation, route }) => {
   const { name } = route.params
+  useEffect(() => {
+    navigation.setOptions({title: `About ${name}`})
+  }, [route.params.name])
   
   return (
     <View style={styles.container}>
@@ -20,7 +24,6 @@ export const AboutScreen:React.FC<AboutScreenProps> = ({ navigation, route }) =>
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#4b4949ff",
     alignItems: 'center',
     justifyContent: "center"
   },

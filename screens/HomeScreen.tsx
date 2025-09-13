@@ -10,7 +10,7 @@ export const HomeScreen:React.FC<HomeScreenProps> = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.text}>Home Screen</Text>
       <Pressable onPress={() => navigation.navigate("About",{
-        name: "Coder"
+        name: "Axis"
       }) }>
         <Text style={styles.nav}>Go to about page</Text>
       </Pressable>
@@ -21,7 +21,6 @@ export const HomeScreen:React.FC<HomeScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#4b4949ff",
     alignItems: 'center',
     justifyContent: "center"
   },
