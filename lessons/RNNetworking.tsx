@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { 
   ActivityIndicator,
-  Button,
   FlatList,
   Pressable,
   StyleSheet,
@@ -27,16 +26,25 @@ export const RNNetworking = () => {
   const [postTitle, setPostTitle] = useState<string>("");
   const [postBody, setPostBody] = useState<string>("");
   const [isPosting, setIsPosting] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   // GET REQUEST
   const fetchData = async(limit = 10) => {
-    setLoading(true);
-    const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}`);
-    const data = await response.json();
-    if (data) {
-      setPosts(data)
+    try {
+      setLoading(true);
+      const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${limit}`);
+      const data = await response.json();
+      if (data) {
+        setPosts(data)
+      }
     }
-    setLoading(false);
+    catch(error) {
+      console.log("Fetching error: ", error);
+      setError("Error fetching posts");
+    }
+    finally {
+      setLoading(false);
+    }
   }
   
   useEffect(() => {
@@ -64,7 +72,8 @@ export const RNNetworking = () => {
       setPostBody("");
     }
     catch(error) {
-      console.error(error);
+      console.error("Posting error", error);
+      setError("Error posting")
     }
     finally{
       setIsPosting(false);
@@ -93,48 +102,54 @@ export const RNNetworking = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        <>
-          <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-              <Text>Title</Text>
-              <TextInput
-                style={styles.formInput}
-                placeholder="Enter a title"
-                value={postTitle}
-                onChangeText={setPostTitle}
-              />
+        {error ? (
+            <View style={styles.errorContainer}>
+              <Text style={{ fontSize: 18, backgroundColor: "pink", borderColor: "red", padding: 20, textAlign: "center" }}>{error}</Text>
             </View>
-            <View style={styles.inputContainer}>
-              <Text>Body</Text>
-              <TextInput
-                style={styles.formInput}
-                placeholder="Enter body"
-                value={postBody}
-                onChangeText={setPostBody}
-              />
-            </View>
-            <Pressable style={styles.postBtn} onPress={handleDataPosting} disabled={isPosting}>
-              <Text style={styles.btnText}>{isPosting ? "Posting..." : "Post content"}</Text>
-            </Pressable>
-          </View>
-          <FlatList 
-            data={posts}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.postCard}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.body}>{item.body}</Text>
+          ) : (
+            <>
+              <View style={styles.formContainer}>
+                <View style={styles.inputContainer}>
+                  <Text>Title</Text>
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="Enter a title"
+                    value={postTitle}
+                    onChangeText={setPostTitle}
+                  />
                 </View>
-              )
-            }}
-            keyExtractor={item => item.id.toString()}
-            ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
-            ListHeaderComponent={() => <Text style={styles.header}>Fetched Posts</Text>}
-            ListFooterComponent={() => <Text style={styles.header}>End of list</Text>}
-            refreshing={refreshing}
-            onRefresh={handleRefresh}
-          />
-        </>
+                <View style={styles.inputContainer}>
+                  <Text>Body</Text>
+                  <TextInput
+                    style={styles.formInput}
+                    placeholder="Enter body"
+                    value={postBody}
+                    onChangeText={setPostBody}
+                  />
+                </View>
+                <Pressable style={styles.postBtn} onPress={handleDataPosting} disabled={isPosting}>
+                  <Text style={styles.btnText}>{isPosting ? "Posting..." : "Post content"}</Text>
+                </Pressable>
+              </View>
+              <FlatList 
+                data={posts}
+                renderItem={({ item }) => {
+                  return (
+                    <View style={styles.postCard}>
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.body}>{item.body}</Text>
+                    </View>
+                  )
+                }}
+                keyExtractor={item => item.id.toString()}
+                ItemSeparatorComponent={() => <View style={{ height: 14 }} />}
+                ListHeaderComponent={() => <Text style={styles.header}>Fetched Posts</Text>}
+                ListFooterComponent={() => <Text style={styles.header}>End of list</Text>}
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            </>
+          )}
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -204,5 +219,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 17,
     fontWeight: "bold"
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center"
   }
 })

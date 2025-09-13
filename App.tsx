@@ -1,28 +1,12 @@
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import RootStack from "./navigation/RootStack";
 
-import { StatusBar, StyleSheet } from "react-native";
-import { SafeAreaProvider,SafeAreaView } from "react-native-safe-area-context";
-// import { RNList } from "./lessons/RNLists";
-// import { InputsNForms } from "./lessons/InputsNForms";
-// import { LoginForm } from "./lessons/LoginForm";
-import { RNNetworking } from "./lessons/RNNetworking";
 
 export default function App() {
-
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={style.safeContainer} edges={['top', 'right', 'left']}>
-        <StatusBar />
-        {/* <RNList />  */}
-        {/* <InputsNForms /> */}
-        {/* <LoginForm /> */}
-        <RNNetworking />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <RootStack />
+    </NavigationContainer>
   )
 }
-
-const style = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-  }
-})
